@@ -34,7 +34,7 @@ def get_closest_bar(data, longitude, latitude):
     return top_closest[0]["properties"]["RowId"]
 
 
-def get_info(data, row_id):
+def get_bar_name(data, row_id):
     """Return basic information in dict data about bar with RowID equals second parameter(row_id)"""
     for b in data["features"]:
         if(b["properties"]["RowId"] == row_id):
@@ -51,6 +51,6 @@ if __name__ == '__main__':
 
     closest_id = get_closest_bar(data, longitude, latitude)
 
-    print("Biggest bar is \"{0}\"".format(get_info(data, biggest_id)))
-    print("Smallest bar is \"{0}\"".format(get_info(data, smallest_id)))
-    print("Closest bar is \"{0}\"".format(get_info(data, closest_id)))
+    print("Biggest bar is \"{0}\"".format(get_bar_name(data, biggest_id)))
+    print("Smallest bar is \"{0}\"".format(get_bar_name(data, smallest_id)))
+    print("Closest bar is \"{0}\"".format(get_bar_name(data, closest_id)))
