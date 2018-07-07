@@ -1,5 +1,6 @@
 import json
 from math import sqrt
+import argparse
 
 
 def load_data(filepath):
@@ -36,20 +37,37 @@ def get_closest_bar(bars_list, longitude, latitude):
     )
     return top_closest_bar
 
+
 def print_bar(message, bar):
-    print("{0} \"{1}\"".format(
+    print("{0} '{1}'".format(
         message,
         bar["properties"]["Attributes"]["Name"]
     ))
 
 
+def create_parser():
+    parser = argparse.ArgumentParser(
+        description="This script prints biggest, smallest and closest bar's name.")
+    parser.add_argument("filepath", metavar="f", type=str,
+                        help="path to json file")
+
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == '__main__':
-    bars_list = load_data('bars.json')
+    args = create_parser()
+    bars_list = load_data(args.filepath)
+
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
-
-    latitude = float(input("Input latitude:"))
-    longitude = float(input("Input longitude:"))
+    while True:
+        try:
+            latitude = float(input("Input latitude of your position: "))
+            longitude = float(input("Input longitude of your position: "))
+            break
+        except ValueError:
+            print("Enter float numbers - latitude and longitude of your position.")
 
     closest_bar = get_closest_bar(bars_list, longitude, latitude)
 
