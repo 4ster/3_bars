@@ -1,13 +1,11 @@
 # TODO: Create tests
-# TODO: Refactor code to insure, that each time we use data, it is exist
+# TODO: Refactor code to insure, that each time we use data, it is exist and valid
 
 import json
 from math import sqrt
 
-# Loads json file
-
-
 def load_data(filepath):
+    """Load json file"""
     with open(filepath) as f:
         data = json.load(f)
     return data
@@ -21,7 +19,7 @@ def get_biggest_bar(data):
 
 
 def get_smallest_bar(data):
-    """Return record ID of the smallest bar """
+    """Return record ID of the smallest bar. Zero seats count allowed. """
     top_smallest = sorted(data["features"],
                           key=lambda x: x["properties"]["Attributes"]["SeatsCount"])
     return top_smallest[0]["properties"]["RowId"]
@@ -37,6 +35,7 @@ def get_closest_bar(data, longitude, latitude):
 
 
 def get_info(data, row_id):
+    """Return basic information in dict data about bar with RowID equals second parameter(row_id)"""
     for b in data["features"]:
         if(b["properties"]["RowId"] == row_id):
             return b["properties"]["Attributes"]["Name"]
