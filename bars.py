@@ -6,12 +6,12 @@ import argparse
 def load_data(filepath):
     try:
         with open(filepath) as json_file:
-            decoded = json.load(json_file)
-        return decoded, None
-    except json.JSONDecodeError as e:
-        return None, e
-    except FileNotFoundError as e:
-        return None, e
+            decoded_json = json.load(json_file)
+        return decoded_json, None
+    except json.JSONDecodeError as error:
+        return None, error
+    except FileNotFoundError as error:
+        return None, error
     
 
 
