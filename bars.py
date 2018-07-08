@@ -45,8 +45,12 @@ def print_bar(message, bar):
 def create_parser():
     parser = argparse.ArgumentParser(
         description="This script prints biggest, smallest and closest bar's name.")
-    parser.add_argument("filepath", metavar="f", type=str,
-                        help="path to json file")
+    parser.add_argument(
+        "filepath",
+        metavar="f",
+        type=str,
+        help="path to json file"
+    )
 
     args = parser.parse_args()
     return args
