@@ -7,12 +7,8 @@ def load_data(filepath):
     with open(filepath) as json_file:
         try:
             decoded = json.load(json_file)
-        except json.JSONDecodeError as e:
-            exit("Error: Invalid json in file {0}.\n{1} in position {2}".format(
-                filepath,
-                e.msg,
-                e.pos
-            ))
+        except json.JSONDecodeError:
+            return None
     return decoded
 
 
@@ -66,10 +62,11 @@ def create_parser():
 
 if __name__ == '__main__':
     args = create_parser()
-    bars_list = load_data(args.filepath)
-
+    
     try:
         bars_list = load_data(args.filepath)
+        if bars_list is None:
+            exit("Error: Invalid json in file {0}.".format(args.filepath))
     except FileNotFoundError as e:
         print("Error: File not found '{0}'".format(e.filename))
 
