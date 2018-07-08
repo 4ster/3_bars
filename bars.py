@@ -12,7 +12,6 @@ def load_data(filepath):
         return None, error
     except FileNotFoundError as error:
         return None, error
-    
 
 
 def get_biggest_bar(bars_list):
@@ -31,7 +30,12 @@ def get_smallest_bar(bars_list):
     return top_smallest_bar
 
 
-def get_closest_bar(bars_list, longitude, latitude):
+def get_closest_bar(bars_list):
+    latitude = ask_user_coord("latitude")
+    longitude = ask_user_coord("longitude")
+
+    if (longitude is None or latitude is None):
+        return None
     top_closest_bar = min(
         bars,
         key=lambda x: (
@@ -63,16 +67,20 @@ def create_parser():
     return args
 
 
+def ask_user_coord(coord_name):
+    try:
+        coordinate = float(
+            input("Input {0} of your position: ".format(coord_name)))
+        return coordinate
+    except ValueError:
+        return None
+
+
 def search_bars(bars_list):
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
+    closest_bar = get_closest_bar(bars_list)
 
-    try:
-        latitude = float(input("Input latitude of your position: "))
-        longitude = float(input("Input longitude of your position: "))
-        closest_bar = get_closest_bar(bars_list, longitude, latitude)
-    except ValueError:
-        closest_bar = None
     return biggest_bar, smallest_bar, closest_bar
 
 
