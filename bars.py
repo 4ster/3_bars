@@ -7,11 +7,12 @@ def load_data(filepath):
     try:
         with open(filepath) as json_file:
             decoded = json.load(json_file)
+        return decoded, None
     except json.JSONDecodeError as e:
         return None, e
     except FileNotFoundError as e:
         return None, e
-    return decoded, None
+    
 
 
 def get_biggest_bar(bars_list):
