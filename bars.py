@@ -4,11 +4,14 @@ import argparse
 
 
 def load_data(filepath):
-    with open(filepath) as json_file:
-        try:
-            decoded = json.load(json_file)
-        except json.JSONDecodeError:
-            return None
+    try:
+        with open(filepath) as json_file:
+            try:
+                decoded = json.load(json_file)
+            except json.JSONDecodeError:
+                return None
+    except FileNotFoundError:
+        return None
     return decoded
 
 
@@ -59,27 +62,28 @@ def create_parser():
     args = parser.parse_args()
     return args
 
-
-if __name__ == '__main__':
-    args = create_parser()
-    
-    try:
-        bars_list = load_data(args.filepath)
-        if bars_list is None:
-            exit("Error: Invalid json in file {0}.".format(args.filepath))
-    except FileNotFoundError as e:
-        print("Error: File not found '{0}'".format(e.filename))
-
-    bars = bars_list["features"]
+def search_bars(bars_list) :
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
-    print_bar("Biggest bar is", biggest_bar)
-    print_bar("Smallest bar is", smallest_bar)
-
+    
     try:
         latitude = float(input("Input latitude of your position: "))
         longitude = float(input("Input longitude of your position: "))
-        closest_bar = get_closest_bar(bars_list, longitude, latitude)
-        print_bar("Closest bar is", closest_bar)
+        closest_bar = get_closest_bar(bars_list, longitude, latitude)  
     except ValueError:
+        closest_bar = None
+    return biggest_bar, smallest_bar, closest_bar
+
+if __name__ == '__main__':
+    args = create_parser()
+    bars_list = load_data(args.filepath)
+    if bars_list is None:
+        exit("Error: Invalid json in file {0} or file not exist.".format(args.filepath))
+    bars = bars_list["features"]
+    biggest_bar, smallest_bar, closest_bar = search_bars(bars_list)
+    print_bar("Biggest bar is", biggest_bar)
+    print_bar("Smallest bar is", smallest_bar)
+    if closest_bar is None:
         exit("Enter float numbers - latitude and longitude of your position.")
+    else:
+        print_bar("Closest bar is", closest_bar)
