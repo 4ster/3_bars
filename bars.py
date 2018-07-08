@@ -5,8 +5,15 @@ import argparse
 
 def load_data(filepath):
     with open(filepath) as json_file:
-        bars_list = json.load(json_file)
-    return bars_list
+        try:
+            decoded = json.load(json_file)
+        except json.JSONDecodeError as e:
+            exit("Error: Invalid json in file {0}.\n{1} in position {2}".format(
+                filepath,
+                e.msg,
+                e.pos
+            ))
+    return decoded
 
 
 def get_biggest_bar(bars_list):
@@ -30,7 +37,7 @@ def get_closest_bar(bars_list, longitude, latitude):
         bars,
         key=lambda x: (
             x["geometry"]["coordinates"][0] - longitude)**2
-            + x["geometry"]["coordinates"][1] - latitude**2
+        + x["geometry"]["coordinates"][1] - latitude**2
 
     )
     return top_closest_bar
@@ -60,6 +67,12 @@ def create_parser():
 if __name__ == '__main__':
     args = create_parser()
     bars_list = load_data(args.filepath)
+
+    try:
+        bars_list = load_data(args.filepath)
+    except FileNotFoundError as e:
+        print("Error: File not found '{0}'".format(e.filename))
+
     bars = bars_list["features"]
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
