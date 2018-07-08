@@ -6,13 +6,12 @@ import argparse
 def load_data(filepath):
     try:
         with open(filepath) as json_file:
-            try:
-                decoded = json.load(json_file)
-            except json.JSONDecodeError:
-                return None
-    except FileNotFoundError:
-        return None
-    return decoded
+            decoded = json.load(json_file)
+    except json.JSONDecodeError as e:
+        return None, e
+    except FileNotFoundError as e:
+        return None, e
+    return decoded, None
 
 
 def get_biggest_bar(bars_list):
@@ -78,10 +77,10 @@ def search_bars(bars_list):
 
 if __name__ == '__main__':
     args = create_parser()
-    bars_list = load_data(args.filepath)
-    if bars_list is None:
-        exit("Error: Invalid json in file {0} or file not exist.".format(
-            args.filepath))
+    bars_list, err = load_data(args.filepath)
+    if err is not None:
+        exit("Error in file {0}\n{1}".format(
+            args.filepath, err))
     bars = bars_list["features"]
     biggest_bar, smallest_bar, closest_bar = search_bars(bars_list)
     print_bar("Biggest bar is", biggest_bar)
