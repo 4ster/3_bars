@@ -58,16 +58,13 @@ if __name__ == '__main__':
     bars = bars_list["features"]
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
-    while True:
-        try:
-            latitude = float(input("Input latitude of your position: "))
-            longitude = float(input("Input longitude of your position: "))
-            break
-        except ValueError:
-            print("Enter float numbers - latitude and longitude of your position.")
-
-    closest_bar = get_closest_bar(bars_list, longitude, latitude)
-
     print_bar("Biggest bar is", biggest_bar)
     print_bar("Smallest bar is", smallest_bar)
-    print_bar("Closest bar is", closest_bar)
+
+    try:
+        latitude = float(input("Input latitude of your position: "))
+        longitude = float(input("Input longitude of your position: "))
+        closest_bar = get_closest_bar(bars_list, longitude, latitude)
+        print_bar("Closest bar is", closest_bar)
+    except ValueError:
+        print("Enter float numbers - latitude and longitude of your position.")
