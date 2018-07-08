@@ -30,7 +30,8 @@ def get_closest_bar(bars_list, longitude, latitude):
         bars,
         key=lambda x: (
             x["geometry"]["coordinates"][0] - longitude)**2
-        + x["geometry"]["coordinates"][1] - latitude**2
+            + x["geometry"]["coordinates"][1] - latitude**2
+
     )
     return top_closest_bar
 
@@ -71,4 +72,4 @@ if __name__ == '__main__':
         closest_bar = get_closest_bar(bars_list, longitude, latitude)
         print_bar("Closest bar is", closest_bar)
     except ValueError:
-        print("Enter float numbers - latitude and longitude of your position.")
+        exit("Enter float numbers - latitude and longitude of your position.")
