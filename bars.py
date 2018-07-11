@@ -30,10 +30,7 @@ def get_smallest_bar(bars_list):
     return top_smallest_bar
 
 
-def get_closest_bar(bars_list):
-    latitude = ask_user_coord("latitude")
-    longitude = ask_user_coord("longitude")
-
+def get_closest_bar(bars_list, latitude, longitude):
     if (longitude is None or latitude is None):
         return None
     top_closest_bar = min(
@@ -76,10 +73,10 @@ def ask_user_coord(coord_name):
         return None
 
 
-def search_bars(bars_list):
+def search_bars(bars_list, latitude, longitude):
     biggest_bar = get_biggest_bar(bars_list)
     smallest_bar = get_smallest_bar(bars_list)
-    closest_bar = get_closest_bar(bars_list)
+    closest_bar = get_closest_bar(bars_list, latitude, longitude)
 
     return biggest_bar, smallest_bar, closest_bar
 
@@ -91,7 +88,9 @@ if __name__ == '__main__':
         exit("Error in file {0}\n{1}".format(
             args.filepath, err))
     bars = bars_list["features"]
-    biggest_bar, smallest_bar, closest_bar = search_bars(bars_list)
+    latitude = ask_user_coord("latitude")
+    longitude = ask_user_coord("longitude")
+    biggest_bar, smallest_bar, closest_bar = search_bars(bars_list, latitude, longitude)
     print_bar("Biggest bar is", biggest_bar)
     print_bar("Smallest bar is", smallest_bar)
     if closest_bar is None:
