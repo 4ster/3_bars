@@ -59,6 +59,20 @@ def create_parser():
         type=str,
         help="path to json file"
     )
+    parser.add_argument(
+        "-lat",
+        "--latitude",
+        type=float,
+        help="Latitude",
+        default = None
+    )
+    parser.add_argument(
+        "-long",
+        "--longitude",
+        type=float,
+        help="Longitude",
+        default = None
+    )
 
     args = parser.parse_args()
     return args
@@ -84,12 +98,14 @@ def search_bars(bars_list, latitude, longitude):
 if __name__ == '__main__':
     args = create_parser()
     bars_list, err = load_data(args.filepath)
+    
     if err is not None:
         exit("Error in file {0}\n{1}".format(
             args.filepath, err))
     bars = bars_list["features"]
-    latitude = ask_user_coord("latitude")
-    longitude = ask_user_coord("longitude")
+    latitude = args.latitude or ask_user_coord("latitude")
+    longitude = args.longitude or ask_user_coord("longitude")
+    
     biggest_bar, smallest_bar, closest_bar = search_bars(bars_list, latitude, longitude)
     print_bar("Biggest bar is", biggest_bar)
     print_bar("Smallest bar is", smallest_bar)
