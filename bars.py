@@ -37,7 +37,7 @@ def get_closest_bar(bars_list, latitude, longitude):
         bars,
         key=lambda x: (
             x["geometry"]["coordinates"][0] - longitude)**2
-            + x["geometry"]["coordinates"][1] - latitude**2
+        + x["geometry"]["coordinates"][1] - latitude**2
 
     )
     return top_closest_bar
@@ -64,14 +64,14 @@ def create_parser():
         "--latitude",
         type=float,
         help="Latitude",
-        default = None
+        default=None
     )
     parser.add_argument(
         "-long",
         "--longitude",
         type=float,
         help="Longitude",
-        default = None
+        default=None
     )
 
     args = parser.parse_args()
@@ -98,15 +98,16 @@ def search_bars(bars_list, latitude, longitude):
 if __name__ == '__main__':
     args = create_parser()
     bars_list, err = load_data(args.filepath)
-    
+
     if err is not None:
         exit("Error in file {0}\n{1}".format(
             args.filepath, err))
     bars = bars_list["features"]
     latitude = args.latitude or ask_user_coord("latitude")
     longitude = args.longitude or ask_user_coord("longitude")
-    
-    biggest_bar, smallest_bar, closest_bar = search_bars(bars_list, latitude, longitude)
+
+    biggest_bar, smallest_bar, closest_bar = search_bars(
+        bars_list, latitude, longitude)
     print_bar("Biggest bar is", biggest_bar)
     print_bar("Smallest bar is", smallest_bar)
     if closest_bar is None:
